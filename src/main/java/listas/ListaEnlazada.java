@@ -175,25 +175,33 @@ public class ListaEnlazada<T> {
      * @throws IndexOutOfBoundsException si indice < 0 o indice > tamanio()
      */
     public void insertar(int indice, T dato) {
-            if (indice<0 || indice>= cantidad){
-                throw new IndexOutOfBoundsException("Indice fuera de rango");
-            }
-            if (indice == 0 ){
-                agregarAlInicio(dato);
-                return;
-            }
-            Nodo <T> anterior = cabeza;
 
-            for (int i = 0; i < indice-1; i++){
-                anterior = anterior.getSiguiente();
-            }
-            //crear el nodo que se inserta
-            Nodo<T> nuevoNodo = new Nodo<T>(dato);
-            // se crea el nuevo nodo con el nodo que esta despues del anterior
-            nuevoNodo.setSiguiente(anterior.getSiguiente());
-            // se enlaza el nodo anterior con el nuevo nodo
-            anterior.setSiguiente(nuevoNodo);
-            cantidad++;//aumenta la cantida ya que se agrego uno nuevo elemento
+        if (indice < 0 || indice > cantidad) {
+            throw new IndexOutOfBoundsException("Indice fuera de rango");
+        }
+
+        if (indice == 0) {
+            agregarAlInicio(dato);
+            return;
+        }
+
+        if (indice == cantidad) {
+            agregarAlFinal(dato);
+            return;
+        }
+
+        Nodo<T> anterior = cabeza;
+
+        for (int i = 0; i < indice - 1; i++) {
+            anterior = anterior.getSiguiente();
+        }
+
+        Nodo<T> nuevoNodo = new Nodo<T>(dato);
+
+        nuevoNodo.setSiguiente(anterior.getSiguiente());
+        anterior.setSiguiente(nuevoNodo);
+
+        cantidad++;
 
 
     }
@@ -317,18 +325,22 @@ public class ListaEnlazada<T> {
      */
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
+        StringBuilder resultado = new StringBuilder("[");
         Nodo<T> puntero = cabeza;
+
         while (puntero != null) {
-            sb.append(puntero.getDato());
+            resultado.append(puntero.getDato());
+
             if (puntero.getSiguiente() != null) {
-                sb.append(", ");
+                resultado.append(", ");
             }
+
             puntero = puntero.getSiguiente();
         }
-        sb.append("]");
-        return sb.toString();
+
+        resultado.append("]");
+        return resultado.toString();
+
     }
 
     // =====================================================================
@@ -340,7 +352,6 @@ public class ListaEnlazada<T> {
      * las referencias 'siguiente' de los nodos existentes.
      */
     public void invertir() {
-
             Nodo<T> anterior = null;
             Nodo<T> actual = cabeza;
             Nodo<T> siguiente;
@@ -355,6 +366,7 @@ public class ListaEnlazada<T> {
             }
 
             cabeza = anterior;
+
     }
 
     /**
@@ -385,7 +397,7 @@ public class ListaEnlazada<T> {
      * de cada uno, conservando el orden. Ej.: [1,2,1,3,2] -> [1,2,3]
      */
     public void eliminarDuplicados() {
-        Nodo<T> actual = cabeza;
+    Nodo<T> actual = cabeza;
 
         while (actual != null) {
             Nodo<T> anterior = actual;
